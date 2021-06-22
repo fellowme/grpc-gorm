@@ -1,0 +1,17 @@
+ServiceName: "grpc_user"
+ServiceHost: "127.0.0.1"
+Port : 8002
+ZapCallerFlag : true
+
+
+EtcdSetting:
+  ServerAddress: "172.28.41.110:2379"
+  Schema: "user"
+  TTL: 5
+MysqlSetting:
+  DbUserName: "root"
+  DbPassword: "123456"
+  DbHost: "172.28.41.110"
+  DbPort: 3306
+  DbName: "grpc"
+  DbDriverName: "mysql"
