@@ -9,4 +9,7 @@ grpc-gin-gorm
 # 新增grpc deadline
 
 # 新增拦截器 进行链式操作
+# 新增etcd 负载均衡  如果采用k8s 部署 不需要etcd 负载均衡
+https://juejin.cn/post/6844903678269210632 etcd 用户验证
+http://thesecretlivesofdata.com/raft/   etcd raft算法演示
 
