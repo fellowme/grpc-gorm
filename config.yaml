@@ -1,17 +1,25 @@
-ServiceName: "grpc_user"
-ServiceHost: "127.0.0.1"
-Port : 8002
-ZapCallerFlag : true
+ServiceName: "grpc_user03"
+ServiceHost: "0.0.0.0:8008"
+Port: 8008
+ZapCallerFlag: true
+Weight: "5"
+LogPath: "D:\\grpc-gin-gorm\\log\\grpc.log"
+LevelInt: -1
 
 
 EtcdSetting:
-  ServerAddress: "172.28.41.110:2379"
+  ServerAddress: "172.22.116.221:2379"
   Schema: "user"
-  TTL: 5
+  TTL: 10
+  DialTimeout: 3
+
 MysqlSetting:
   DbUserName: "root"
   DbPassword: "123456"
-  DbHost: "172.28.41.110"
+  DbHost: "172.22.116.221"
   DbPort: 3306
   DbName: "grpc"
   DbDriverName: "mysql"
+  MaxIdleConnects: 10
+  MaxOpenConnects: 50
+  LogMode: false
