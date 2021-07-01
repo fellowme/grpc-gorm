@@ -37,9 +37,9 @@ message MessageResponse{
 }
 
 service UserService {
-    rpc GetUser(UserRequest) returns (UserResponse);
-    rpc CreateUser(UserRequest) returns (MessageResponse);
-    rpc UpdateUser(UserRequest) returns (MessageResponse);
-    rpc DeleteUser(UserRequest) returns (MessageResponse);
-    rpc UserList(UserIdListRequest) returns (UserListResponse);
+     rpc GetUser(UserRequest) returns (UserResponse);
+     rpc CreateUser(UserRequest) returns (MessageResponse);
+     rpc UpdateUser(UserRequest) returns (MessageResponse);
+     rpc DeleteUser(UserRequest) returns (MessageResponse);
+     rpc UserList(UserIdListRequest) returns (UserListResponse);
 }
