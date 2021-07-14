@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"github.com/jinzhu/gorm"
-	"grpc/model"
-	"grpc/service"
+	"gorm.io/gorm"
+	"grpc-gorm/model"
+	"grpc-gorm/service"
 )
 
 type (
@@ -38,7 +38,7 @@ func (ud UserDao) CreateUserDao(user service.UserRequest) error {
 }
 
 func (ud UserDao) UpdateUserDao(user service.UserRequest) error {
-	if err := ud.db.Table("grpc_user").Where("id=?", user.Id).Update(&user).Error; err != nil {
+	if err := ud.db.Table("grpc_user").Where("id=?", user.Id).Updates(&user).Error; err != nil {
 		return err
 	}
 	return nil
@@ -53,13 +53,13 @@ func (ud UserDao) DeleteUserDao(userId int32) error {
 
 func (ud UserDao) UserListCountDao(param service.UserIdListRequest) (userCountList service.UserListResponse) {
 	var userList []*service.UserResponse
-	var totalCount int32
+	var totalCount int64
 	userDb := ud.db.Table("grpc_user")
 	if len(param.UserId) != 0 {
 		userDb.Where("id in ? ", param.UserId)
 	}
 	userDb.Count(&totalCount)
-	userDb.Offset((param.Page - 1) * param.PageSize).Limit(param.PageSize).Find(&userList)
+	userDb.Offset(int((param.Page - 1) * param.PageSize)).Limit(int(param.PageSize)).Find(&userList)
 	userCountList.TotalCount = totalCount
 	userCountList.UserList = userList
 	return userCountList
