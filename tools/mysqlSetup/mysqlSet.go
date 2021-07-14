@@ -2,40 +2,52 @@ package mysqlSetup
 
 import (
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
-	"grpc/middleware"
-	"grpc/tools/settings"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"grpc-gorm/tools/logSetup"
+	"grpc-gorm/tools/settings"
 )
 
-var mysqlDb *gorm.DB
+var db *gorm.DB
 
 func SetUp() *gorm.DB {
 	msg := fmt.Sprintf("mysql.Setup 开始链接数据库")
-	middleware.MyLogger.Info(msg)
+	logSetup.MyLogger.Info(msg)
 	var err error
-	mysqlDb, err = gorm.Open(settings.AppSetting.MysqlSetting.DbDriverName, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	db, err = gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		settings.AppSetting.MysqlSetting.DbUserName,
 		settings.AppSetting.MysqlSetting.DbPassword,
 		fmt.Sprintf("%s:%d", settings.AppSetting.MysqlSetting.DbHost, settings.AppSetting.MysqlSetting.DbPort),
-		settings.AppSetting.MysqlSetting.DbName))
+		settings.AppSetting.MysqlSetting.DbName)), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 
 	if err != nil {
 		msg := fmt.Sprintf("mysql.Setup err= %v", err)
-		middleware.MyLogger.Error(msg)
+		logSetup.MyLogger.Error(msg)
 	}
-	mysqlDb.DB().SetMaxIdleConns(settings.AppSetting.MysqlSetting.MaxIdleConnects)
-	mysqlDb.DB().SetMaxOpenConns(settings.AppSetting.MysqlSetting.MaxOpenConnects)
-	mysqlDb.LogMode(settings.AppSetting.MysqlSetting.LogMode)
+	mysqlDB, err := db.DB()
+	if err != nil {
+		msg := fmt.Sprintf("mysql.Setup err= %v", err)
+		logSetup.MyLogger.Error(msg)
+	}
+	mysqlDB.SetMaxIdleConns(settings.AppSetting.MysqlSetting.MaxIdleConnects)
+	mysqlDB.SetMaxOpenConns(settings.AppSetting.MysqlSetting.MaxOpenConnects)
 	msg = fmt.Sprintf("mysql.Setup 链接数据库成功")
-	middleware.MyLogger.Info(msg)
-	return mysqlDb
+	logSetup.MyLogger.Info(msg)
+	return db
 }
 
 func CloseDB() {
-	if mysqlDb != nil {
-		if err := mysqlDb.Close(); err != nil {
-			middleware.MyLogger.Error("mysql 关闭错误！")
+	if db != nil {
+		sqlDB, err := db.DB()
+		if err != nil {
+			logSetup.MyLogger.Error(fmt.Sprintf("mysql db.DB() 关闭错误！err=%v", err))
+			return
+		}
+		if err := sqlDB.Close(); err != nil {
+			logSetup.MyLogger.Error(fmt.Sprintf("mysql sqlDB.Close() 关闭错误！err=%v", err))
 		}
 	}
 }
