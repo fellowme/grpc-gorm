@@ -9,10 +9,6 @@ ZapLoggerSetting:
   ZapCallerFlag: true
 
 
-Tracer:
-  CollectorEndpoint: "http://172.29.34.103:14268/shixun_middle_app/api/traces"
-  SamplerParam: 1
-
 EtcdSetting:
   ServerAddress: "172.29.34.103:2379"
   Schema: "user"
