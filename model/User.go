@@ -1,7 +1,7 @@
 package model
 
 import (
-	"grpc/tools/base_model"
+	"grpc-gorm/tools/base_model"
 )
 
 type User struct {
