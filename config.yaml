@@ -1,22 +1,28 @@
 ServiceName: "grpc_user03"
 ServiceHost: "0.0.0.0:8008"
-Port: 8008
-ZapCallerFlag: true
 Weight: "5"
-LogPath: "D:\\grpc-gin-gorm\\log\\grpc.log"
-LevelInt: -1
 
+
+ZapLoggerSetting:
+  LogPath: "D:\\grpc-gin-gorm\\log\\grpc.log"
+  LevelInt: -1
+  ZapCallerFlag: true
+
+
+Tracer:
+  CollectorEndpoint: "http://172.29.34.103:14268/shixun_middle_app/api/traces"
+  SamplerParam: 1
 
 EtcdSetting:
-  ServerAddress: "172.22.116.221:2379"
+  ServerAddress: "172.29.34.103:2379"
   Schema: "user"
   TTL: 10
-  DialTimeout: 3
+  DialTimeout: 5
 
 MysqlSetting:
   DbUserName: "root"
   DbPassword: "123456"
-  DbHost: "172.22.116.221"
+  DbHost: "172.29.34.103"
   DbPort: 3306
   DbName: "grpc"
   DbDriverName: "mysql"
