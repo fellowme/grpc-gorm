@@ -26,15 +26,18 @@ type mysqlConfig struct {
 }
 
 type appConfig struct {
-	ServiceName   string
-	ServiceHost   string
-	Port          int
-	ZapCallerFlag bool
-	Weight        string
+	ServiceName      string
+	ServiceHost      string
+	Weight           string
+	ZapLoggerSetting zapLoggerConfig
+	EtcdSetting      etcdConfig
+	MysqlSetting     mysqlConfig
+}
+
+type zapLoggerConfig struct {
 	LogPath       string
 	LevelInt      int
-	EtcdSetting   etcdConfig
-	MysqlSetting  mysqlConfig
+	ZapCallerFlag bool
 }
 
 var AppSetting appConfig
